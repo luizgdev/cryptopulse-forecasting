@@ -2,34 +2,37 @@ using Test
 using Statistics
 using Flux
 
-# Import the logic file directly (bypass the HTTP server)
-# We assume the file is located at ../src/model.jl relative to this test file
+# Import the logic file
 include("../src/model.jl")
 
 @testset "Julia Backend Tests" begin
 
     @testset "Neural Network Logic" begin
-        # 1. Sanity Check: Does the model run without errors?
-        # Create a dummy array of prices: [1.0, 2.0, ..., 10.0]
+        # 1. Sanity Check
         dummy_prices = collect(1.0:10.0) 
         
-        # Run the training and prediction function
-        prediction = train_and_predict(dummy_prices, 3)
+        (prediction, loss_val, fitted) = train_and_predict(dummy_prices, 3)
         
-        # Assertions
-        @test prediction isa Float64       # Result must be a number
-        @test !isnan(prediction)           # Result cannot be NaN
-        @test prediction > 0               # Price cannot be negative
+        # Testes on prediction
+        @test prediction isa Float64
+        @test !isnan(prediction)
+        @test prediction > 0
+        
+        # Testes on new metrics
+        @test loss_val isa Float64
+        @test loss_val >= 0
+        @test length(fitted) > 0
     end
 
     @testset "Edge Cases" begin
         # 2. Flat Market Scenario
-        # If the price is stable at 100.0, the prediction should be close to 100.0
         flat_prices = fill(100.0, 20)
-        prediction = train_and_predict(flat_prices, 5)
         
-        # We use 'approx' (≈) because Neural Nets are stochastic
+        (prediction, loss_val, fitted) = train_and_predict(flat_prices, 5)
+        
         @test prediction ≈ 100.0 atol=0.5
+        
+        @test loss_val < 0.1
     end
 
 end
