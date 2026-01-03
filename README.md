@@ -53,7 +53,7 @@ You don't need to install Python or Julia locally. Just Docker.
 
 ``` bash
 # 1. Clone the repository
-git clone [https://github.com/luizgdev/cryptopulse-forecasting.git](https://github.com/luizgdev/cryptopulse-forecasting.git)
+git clone https://github.com/luizgdev/cryptopulse-forecasting.git
 cd cryptopulse-forecasting
 
 # 2. Start the Application
