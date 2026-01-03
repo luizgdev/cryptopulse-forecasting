@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+
+# Julia
+*.ji
+*.cov
+*.mem
+.julia/
+
+# OS & Editor
+.DS_Store
+.vscode/
+.idea/
+
+# Docker (se tiver logs locais)
+docker-compose.override.yml

@@ -1,0 +1,47 @@
+name: Polyglot CI Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-hybrid-app:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Checkout Code
+    - uses: actions/checkout@v4
+
+    # --- PYTHON TRACK ---
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+
+    - name: Install Python Dependencies
+      run: |
+        cd python_service
+        pip install streamlit requests pandas plotly ccxt pytest requests-mock
+
+    - name: Run Python Unit Tests
+      run: |
+        cd python_service
+        pytest
+
+    # --- JULIA TRACK ---
+    - name: Set up Julia 1.10
+      uses: julia-actions/setup-julia@v1
+      with:
+        version: '1.10'
+
+    - name: Install Julia Dependencies
+      # We explicitly add the packages used in src/ and test/
+      run: |
+        julia -e 'using Pkg; Pkg.add(["Oxygen", "HTTP", "JSON", "TimeSeries", "Statistics", "Dates", "Flux", "Zygote", "Random", "Test"])'
+      
+    - name: Run Julia Unit Tests
+      run: |
+        cd julia_service
+        julia test/runtests.jl

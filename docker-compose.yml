@@ -1,0 +1,22 @@
+services:
+  # Service 1: The Brain (Julia)
+  julia-backend:
+    build: ./julia_service
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Service 2: The Face (Python)
+  python-frontend:
+    build: ./python_service
+    ports:
+      - "8501:8501"
+    environment:
+      # CRITICAL: We point to the container name, not localhost!
+      - JULIA_URL=http://julia-backend:8080
+    depends_on:
+      - julia-backend
