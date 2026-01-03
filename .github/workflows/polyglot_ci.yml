@@ -20,15 +20,17 @@ jobs:
       with:
         python-version: "3.11"
 
-    - name: Install Python Dependencies
+    - name: Install Python Dependencies (Poetry)
       run: |
         cd python_service
-        pip install streamlit requests pandas plotly ccxt pytest requests-mock
+        pip install poetry
+        poetry install
 
     - name: Run Python Unit Tests
       run: |
         cd python_service
-        pytest
+        # Use 'poetry run' to execute inside the environment
+        poetry run pytest
 
     # --- JULIA TRACK ---
     - name: Set up Julia 1.10

@@ -1,20 +1,27 @@
-# 1. Base Image
+# Base Image
 FROM python:3.11-slim
 
-# 2. Set working directory
+# Set working directory
 WORKDIR /app
 
-# 3. Install System Dependencies (sometimes needed for building packages)
+# Install system dependencies (needed for compiling some python packages)
 RUN apt-get update && apt-get install -y build-essential && rm -rf /var/lib/apt/lists/*
 
-# 4. Install Python Dependencies
-RUN pip install streamlit requests pandas plotly ccxt
+# 1. Install Poetry
+RUN pip install poetry
 
-# 5. Copy Code
+# 2. Copy dependency files FIRST (for Docker caching)
+COPY pyproject.toml poetry.lock* ./
+
+# 3. Install dependencies
+# We disable virtualenvs creation to install directly into the system python inside the container
+RUN poetry config virtualenvs.create false && poetry install --no-interaction --no-ansi
+
+# 4. Copy Source Code
 COPY src/ src/
 
-# 6. Expose Streamlit Port
+# Expose Streamlit Port
 EXPOSE 8501
 
-# 7. Start Command
+# Start Command
 CMD ["streamlit", "run", "src/app.py", "--server.address=0.0.0.0"]
