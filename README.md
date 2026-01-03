@@ -3,9 +3,12 @@
 ![Python](https://img.shields.io/badge/Frontend-Python_3.11-blue?logo=python&logoColor=white)
 ![Julia](https://img.shields.io/badge/Backend-Julia_1.10-purple?logo=julia&logoColor=white)
 ![Docker](https://img.shields.io/badge/Deployment-Docker-2496ED?logo=docker&logoColor=white)
-![CI/CD](https://github.com/SEU_USUARIO/cryptopulse-forecasting/actions/workflows/polyglot_ci.yml/badge.svg)
+![CI/CD](https://github.com/luizgdev/cryptopulse-forecasting/actions/workflows/polyglot_ci.yml/badge.svg)
 
 A high-frequency market forecasting engine demonstrating a **Polyglot Microservice Architecture**. It combines **Python's** rich ecosystem for data fetching/visualization with **Julia's** high-performance computing capabilities for real-time Neural Network training (Flux.jl).
+
+![CryptoPulse Dashboard](docs/dashboard_preview.png)
+> *Note: Market data timestamps are displayed in **UTC** to maintain industry standards for financial engineering.*
 
 ## 🏗️ Architecture
 
@@ -25,41 +28,50 @@ graph LR
     end
 
     D -->|Return Forecast| C
-🚀 Key Features
-Hybrid Compute: Offloads heavy mathematical operations (SMA, Neural Networks) to a dedicated Julia microservice.
+```
 
-Online Learning: The AI model (Flux.jl) retrains instantly on the latest market window received.
+## 🚀 Key Features
+- Hybrid Compute: Offloads heavy mathematical operations (SMA, Neural Networks) to a dedicated Julia microservice.
 
-Resilient: Includes timeouts and error handling for microservice communication.
+- Online Learning: The AI model (Flux.jl) retrains instantly on the latest market window received using an explicit training loop.
 
-CI/CD: Automated testing pipeline for both Python and Julia environments.
+- Visual Validation: Includes real-time curve fitting visualization to verify if the model is learning temporal patterns vs. random noise.
 
-🛠️ Tech Stack
-Frontend: Python, Streamlit, Plotly, CCXT (Data Fetching).
+- Resilient: Implements timeouts and error handling for robust microservice communication.
 
-Backend: Julia, Oxygen.jl (API), Flux.jl (Deep Learning), TimeSeries.jl.
+- CI/CD: Automated testing pipeline for both Python (pytest) and Julia (Test.jl) environments via GitHub Actions.
 
-Infra: Docker & Docker Compose.
+## 🛠️ Tech Stack
+- Frontend: Python 3.11, Streamlit, Plotly, CCXT (Data Fetching).
 
-🏃‍♂️ How to Run
+- Backend: Julia 1.10, Oxygen.jl (API), Flux.jl (Deep Learning), TimeSeries.jl.
+
+- Infra: Docker & Docker Compose.
+
+## 🏃‍♂️ How to Run
 You don't need to install Python or Julia locally. Just Docker.
 
+``` bash
 # 1. Clone the repository
-git clone [https://github.com/YOUR_USERNAME/cryptopulse-forecasting.git](https://github.com/YOUR_USERNAME/cryptopulse-forecasting.git)
+git clone [https://github.com/SEU_USUARIO/cryptopulse-forecasting.git](https://github.com/SEU_USUARIO/cryptopulse-forecasting.git)
 cd cryptopulse-forecasting
 
 # 2. Start the Application
 docker-compose up --build
+```
 Access the dashboard at: http://localhost:8501
 
-🧪 Testing
-This project includes a dual-language testing suite.
+## 🧪 Testing
+This project includes a dual-language testing suite ensuring integrity across the stack.
 
-# Run Python Tests (Frontend)
+``` bash
+# Run Python Tests (Frontend Integration)
 cd python_service
 pytest
 
-# Run Julia Tests (Backend)
+# Run Julia Tests (Backend Logic)
 cd julia_service
 julia test/runtests.jl
-Developed as a Polyglot Architecture Portfolio Project.
+```
+---
+*Developed as a Polyglot Architecture Portfolio Project.*
