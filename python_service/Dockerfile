@@ -15,7 +15,7 @@ COPY pyproject.toml poetry.lock* ./
 
 # 3. Install dependencies
 # We disable virtualenvs creation to install directly into the system python inside the container
-RUN poetry config virtualenvs.create false && poetry install --no-interaction --no-ansi
+RUN poetry config virtualenvs.create false && poetry install --no-root --no-interaction --no-ansi
 
 # 4. Copy Source Code
 COPY src/ src/
